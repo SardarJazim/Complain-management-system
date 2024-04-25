@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sign In</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+  <center><h1> Sign In  </h1></center>
+  <form>
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+      <input type="email" id="email" class="form-control" />
+      <label class="form-label" for="form2Example1">Email address</label>
+    </div>
+  
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+      <input type="password" id="password" class="form-control" />
+      <label class="form-label" for="form2Example2">Password</label>
+    </div>
+  
+    <!-- 2 column grid layout for inline styling -->
+    
+  
+     
+  
+    <!-- Submit button -->
+    <button type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+  
+    
+  </form>
+
+
+    
+    
+    
+
+</body>
+
+<script>
+
+
+  $("button").click(function (e) { 
+    e.preventDefault();
+           sendRequest($("#email").val(), $("#password").val());
+           
+        });
+      function  sendRequest(email,password){
+      $.ajax({
+          type:'POST',
+          url: 'http://127.0.0.1:5000/login',
+          
+          data:{'email':email,'password':password},
+          success: function (response) {
+            if (response['user']=='admin'){
+              window.location.href = "{{url_for('admin')}}"
+            }
+              else if(response['status']=='OK'){
+              window.location.href= "{{url_for('dashboard')}}"
+              } else{
+                alert(response['status'])
+              }
+              
+                 
+                 
+              },
+      })
+      }
+  
+  </script>
+  
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Admin</title>
+</head>
+<body>
+    <center><h1>  Admin Page </h1></center>
+    <div>
+        <button type="button" id="adminView" class="btn btn-primary">View All Complains</button>
+    </div>
+        <br>
+
+        <label >Select The Category wise Complains</label>
+        <br>
+    <div>
+        <form>
+        <input type="radio" class="category" name="category"   value="Hostel">
+        <label >Hostel</label>
+        <input type="radio" class="category" name="category" value="Mess">
+        <label >Mess</label>
+        <input type="radio" class="category" name="category"  value="Courses">
+        <label >Courses</label>
+        </form>
+    </div>
+    
+    <table class="table table-striped table-dark" id="allComplains">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Email</th>
+                <th scope="col">Complain</th>
+                <th scope="col">Category</th>
+                <th scope="col">Delete Item</th>
+            </tr>
+        </thead>
+        <tbody>
+    
+        </tbody>
+        
+        
+    </table>
+</body>
+</html>
+
+<script>
+
+$("#adminView").click(function (e) { 
+    e.preventDefault();
+    showComplains();
+    
+});
+
+
+function showComplains() {
+    $('tbody').empty();
+    $('#allComplains').show();
+    $.ajax({
+    type: "GET",
+    url: "http://127.0.0.1:5000/admin/view",
+    success:
+    
+    function (response) {
+    response.forEach(complain=>{
+    id = complain['id']
+    email= complain['email']
+    text = complain['text']
+    category = complain['category']
+    $('tbody').append(
+        '<tr><td>'+id+'</td><td>'+email+'</td><td>'+text+'</td><td>'+category+'</td><td><button class="btn btn-primary" onclick="DELETE('+id+
+                    ')">DELETE</button></td></tr>'
+    )
+        
+    })
+        
+        
+    }
+    });
+}
+
+
+function DELETE(id){
+        $.ajax({
+            type:"DELETE",
+            url:'http://127.0.0.1:5000/admin/'+id+'',
+            success:function(response){
+                showComplains();
+            }
+        }
+        )}
+</script>
