@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <form method="POST">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email</label>
+          <input type="email" class="form-control" name="email" id ="email"  placeholder="Email">
+          
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="pasword" class="form-control" name="password" id ="password" placeholder="Password" >
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Confirm Password</label>
+            <input type="password" class="form-control" name="cpassword" id ="cpassword" placeholder="Confirm Password" >
+          </div>
+        
+        <button type="submit" class="btn btn-primary" >Sign Up</button>
+</form>
+
+
+    
+    
+    
+
+</body>
+
+<script>
+
+
+$("button").click(function (e) { 
+  e.preventDefault();
+         sendRequest($("#email").val(), $("#password").val(),$("#cpassword").val());
+         
+      });
+    function  sendRequest(email,password,cpassword){
+    $.ajax({
+        type:'POST',
+        url: 'http://127.0.0.1:5000/signup',
+        
+        data:{'email':email,'password':password,'cpassword':cpassword},
+        success: function (response) {
+            if(response['status']=='OK'){
+              window.location.href= "{{url_for('login')}}"
+            } else {
+              alert(response['status'])
+            }
+            
+               
+               
+            },
+    })
+    }
+
+</script>
+
+
+</html>

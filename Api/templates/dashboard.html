@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashBoard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div>
+        <center> <h1> Complain Management system </h1> </center>
+    </div>
+    <div>
+        <label for="exampleFormControlTextarea1" class="form-label">Enter Your Complain</label>
+    </div>
+    <br>
+      <div class="mb-3">
+        
+        <textarea class="form-control" id="text" rows="2"></textarea>
+        
+      </div>
+    <br>
+    <div>
+        <label for="exampleFormControlTextarea2" class="form-label">Enter Your Complain</label>
+    </div>
+
+      <div class="form-group">
+        <input type="radio" class="category" name="category"   value="Hostel" checked="checked">
+        <label >Hostel</label>
+        <input type="radio" class="category" name="category" value="Mess">
+        <label >Mess</label>
+        <input type="radio" class="category" name="category"  value="Courses">
+        <label >Courses</label>
+
+        
+     </div>
+     <br>
+     <div>
+        <label>Register Complain</label>
+    <br>
+        <button type="submit" class="btn btn-primary" id="registerComplain">Submit</button>
+    </div>
+    </form>
+    <br>
+
+    <div>
+            <center> 
+                <button id="mycomplains" class ="btn btn-primary" > My Complains  </button>
+
+            </center>
+    </div>
+
+    <table class="table table-striped table-dark" id="tcomplains">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Complain</th>
+                <th scope="col">Category</th>
+            </tr>
+        </thead>
+        <tbody>
+    
+        </tbody>
+        
+        
+    </table>
+</body>
+</html>
+
+<script>
+
+$("#registerComplain").click(function (e) { 
+         e.preventDefault();
+         sendRequest($("#text").val(),$('.category:checked').val());
+         
+      });
+
+$("#mycomplains").click(function (e) { 
+    e.preventDefault();
+    showComplains();
+    
+});
+
+
+function sendRequest(text,category) {
+    $.ajax({
+    type: "POST",
+    url: "http://127.0.0.1:5000/dashboard",
+    data: {'text': text,'category':category},
+    success: function (response) {
+       console.log(response)
+        
+        
+    }
+    });
+}
+
+
+
+function showComplains() {
+    $('tbody').empty();
+    $('#tcomplains').show();
+    $.ajax({
+    type: "GET",
+    url: "http://127.0.0.1:5000/dashboard/view",
+    success:
+    
+    function (response) {
+    response.forEach(complain=>{
+    id = complain['id']
+    email= complain['email']
+    text = complain['text']
+    category = complain['category']
+    $('tbody').append(
+        '<tr><td>'+id+'</td><td>'+text+'</td><td>'+category+'</td><td>'
+    )
+        
+    })
+        
+        
+    }
+    });
+}
+
+
+
+
+</script>
+
+
